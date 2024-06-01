@@ -9,6 +9,7 @@
 ├── static
     └── swagger.json
 ├── app.py
+├── requirements.txt
 └── routes.py
 ```
 
