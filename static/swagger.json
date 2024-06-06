@@ -1,0 +1,353 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "IT Inventory",
+        "description": "API for managing IT asset inventory per employee",
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/employee": {
+            "post": {
+                "summary": "Insert a new employee",
+                "description": "Endpoint to add a new employee",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "cpf": {
+                                    "type": "string",
+                                    "description": "Employee's CPF (11 digits)"
+                                },
+                                "name": {
+                                    "type": "string",
+                                    "description": "Employee's name"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Employee inserted successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "get": {
+                "summary": "List all employees",
+                "description": "Endpoint to retrieve all employees",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "cpf": {
+                                        "type": "string",
+                                        "description": "Employee's CPF (11 digits)"
+                                    },
+                                    "assets": {
+                                        "type": "object",
+                                        "description": "Employee's assets"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Employee's name"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/employee/{cpf}": {
+            "get": {
+                "summary": "Retrieve employee's inventory",
+                "description": "Endpoint to retrieve an employee's inventory via CPF",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Employee's CPF (11 digits)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Listing employee's assets",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "assets": {
+                                    "type": "object",
+                                    "description": "Employee's assets"
+                                }
+
+
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Update employee's name",
+                "description": "Endpoint to update an employee's name via CPF",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Employee's CPF (11 digits)"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "description": "New employee's name"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee name updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an employee",
+                "description": "Endpoint to delete an employee based on their CPF",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Employee's CPF (11 digits)"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Employee deleted successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/employee/{cpf}/asset": {
+            "post": {
+                "summary": "Insert assets for an employee",
+                "description": "Endpoint to add assets to an employee via CPF",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Employee's CPF (11 digits)"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "assets": {
+                                    "type": "object",
+                                    "description": "Assets to be inserted",
+                                    "additionalProperties": {
+                                        "type": "string",
+                                        "description": "Information about the asset"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Assets inserted successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Employee not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        },
+        "/employee/{cpf}/asset/{asset}": {
+            "put": {
+                "summary": "Update an asset information",
+                "description": "Endpoint to update an employee's asset information",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Employee's CPF (11 digits)"
+                    },
+                    {
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Asset type"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "additionalProperties": {
+                                    "type": "string",
+                                    "description": "Information about the asset"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Asset information updated successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Employee or asset not found"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete an asset",
+                "description": "Endpoint to delete an employee's asset",
+                "parameters": [
+                    {
+                        "name": "cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Employee's CPF (11 digits)"
+                    },
+                    {
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Asset type"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Asset deleted successfully"
+                    },
+                    "404": {
+                        "description": "Employee or asset not found"
+                    }
+                }
+            }
+        },
+        "/employee/{source_cpf}/transfer/{target_cpf}/asset/{asset}": {
+            "post": {
+                "summary": "Transfer an asset from an employee to another",
+                "description": "Endpoint to transfer assets between employees",
+                "parameters": [
+                    {
+                        "name": "source_cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Source employee's CPF (11 digits)"
+                    },
+                    {
+                        "name": "target_cpf",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Target employee's CPF (11 digits)"
+                    },
+                    {
+                        "name": "asset",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Asset type"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Asset transferred successfully"
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "404": {
+                        "description": "Employee or asset not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
+        }
+    }
+}
